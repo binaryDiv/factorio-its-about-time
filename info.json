@@ -1,0 +1,13 @@
+{
+    "name": "its-about-time",
+    "version": "0.1.0",
+    "title": "It's About Time!",
+    "author": "binaryDiv",
+    "contact": "factorio@binarydiv.dev",
+    "homepage": "https://github.com/binaryDiv/factorio-its-about-time",
+    "description": "Displays a clock with the in-game time on the current planet.",
+    "factorio_version": "2.0",
+    "dependencies": [
+        "base >= 2.0"
+    ]
+}
