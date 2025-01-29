@@ -1,0 +1,5 @@
+require("scripts/clock_gui.lua")
+require("scripts/events.lua")
+require("scripts/helpers.lua")
+require("scripts/settings.lua")
+require("scripts/update_clock.lua")
