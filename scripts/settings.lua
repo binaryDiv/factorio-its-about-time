@@ -18,3 +18,13 @@ function toggle_player_setting_show_clock(player)
     -- Set new value by inverting the value
     player.mod_settings["itsabouttime-show-clock"] = { value = not current_value }
 end
+
+-- Read player setting: Clock precision (returned as an integer or the string "auto")
+function get_player_setting_clock_precision(player)
+    local precision = player.mod_settings["itsabouttime-clock-precision"].value
+    if precision == "auto" then
+        return "auto"
+    else
+        return tonumber(precision)
+    end
+end

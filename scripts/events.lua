@@ -42,9 +42,8 @@ script.on_event("itsabouttime-toggle-gui", function(event)
 end)
 
 
--- TODO: Update rate: What's a good value? Does it make sense to have a dynamic update rate based on the planet's day
---       length and the player's precision settings? If it's static, do we need a game setting for it?
-local CLOCK_UPDATE_RATE = 4
+-- Update clock every 5th tick (i.e. 12 times per second)
+local CLOCK_UPDATE_RATE = 5
 
 script.on_nth_tick(CLOCK_UPDATE_RATE, function()
     for _, player in pairs(game.players) do

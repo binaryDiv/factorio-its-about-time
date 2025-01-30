@@ -47,9 +47,17 @@ function update_clock_time(player)
         -- TODO: Localise!
         set_clock_time(player, "SPACE!")
     else
-        -- Planet or any other kind of surface
-        -- TODO: Variable precision based on the length of a day on the planet?
-        local time_str = convert_daytime_to_str(effective_surface.daytime, 10)
+        -- Player is either on a planet, a space platform orbiting a planet, or some other kind of surface.
+
+        -- Read player settings to determine the clock precision
+        local precision = get_player_setting_clock_precision(player)
+
+        if precision == "auto" then
+            -- Dynamic precision: Calculate optimal precision depending on the length of a day on the planet
+            precision = calculate_dynamic_clock_precision(effective_surface.ticks_per_day)
+        end
+
+        local time_str = convert_daytime_to_str(effective_surface.daytime, precision)
         set_clock_time(player, time_str, effective_surface.freeze_daytime)
     end
 end
