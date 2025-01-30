@@ -1,5 +1,4 @@
 -- Add a custom keyboard shortcut to toggle whether the GUI is visible. Changes the "show-clock" per-player mod setting.
--- TODO: Localise!
 data:extend({
     {
         type = "custom-input",

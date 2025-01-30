@@ -22,13 +22,11 @@ function update_clock_location(player)
     elseif surface.platform then
         -- If the platform is not stopped at a space location, show the Space Age icon instead.
         set_clock_planet(player, nil)
-        -- TODO: Localise tooltip!
-        set_clock_misc_sprite(player, "utility/space_age_icon", "You're traveling through space!\nPchooooo!")
+        set_clock_misc_sprite(player, "utility/space_age_icon", { "itsabouttime.location-tooltip-in-space" })
     else
         -- Player is on a surface that's neither a planet nor a space platform (e.g. a Blueprint Sandbox surface)
         set_clock_planet(player, nil)
-        -- TODO: Localise tooltip!
-        set_clock_misc_sprite(player, "utility/questionmark", "This is neither a planet nor a space platform. Where are you?")
+        set_clock_misc_sprite(player, "utility/questionmark", { "itsabouttime.location-tooltip-unknown-surface" })
     end
 end
 
@@ -44,8 +42,7 @@ function update_clock_time(player)
 
     if effective_surface.platform ~= nil then
         -- Player is on a space platform that is *not* orbiting a planet with a surface. There is no time.
-        -- TODO: Localise!
-        set_clock_time(player, "SPACE!")
+        set_clock_time(player, { "itsabouttime.time-caption-space" })
     else
         -- Player is either on a planet, a space platform orbiting a planet, or some other kind of surface.
 
@@ -106,34 +103,32 @@ end
 
 -- Generate the tooltip for the given space location, containing information about the planet's daytimes if available
 function get_space_location_tooltip(space_location)
-    -- TODO: Localise tooltip and space location name!
     if space_location.type == "planet" then
-        local tooltip = string.format(
-            "[font=default-bold]Planet:[/font] %s\n",
-            space_location.name:gsub("^%l", string.upper)
-        )
-
         local planet_surface = game.surfaces[space_location.name]
+        local planet_data_tooltip
 
+        -- Add some additional data about the day times on the planet if it already has a surface.
+        -- If the planet doesn't have a surface yet, that likely means the player has not landed on it yet.
         if planet_surface ~= nil then
-            -- TODO: Localise
-            tooltip = tooltip .. string.format(
-                "[font=default-bold]Sunrise:[/font] %s\n[font=default-bold]Day:[/font] %s\n[font=default-bold]Sunset:[/font] %s\n[font=default-bold]Night:[/font] %s",
+            planet_data_tooltip = {
+                "itsabouttime.location-tooltip-planet-data",
                 convert_daytime_to_str(planet_surface.morning, 5),
                 convert_daytime_to_str(planet_surface.dawn, 5),
                 convert_daytime_to_str(planet_surface.dusk, 5),
-                convert_daytime_to_str(planet_surface.evening, 5)
-            )
+                convert_daytime_to_str(planet_surface.evening, 5),
+            }
         else
-            -- TODO: Localise
-            tooltip = tooltip .. "Land on this planet to learn new information."
+            planet_data_tooltip = { "itsabouttime.location-tooltip-planet-no-data" }
         end
 
-        return tooltip
+        -- Concatenate localised strings: Planet title and additional daytime data
+        return {
+            "",
+            { "itsabouttime.location-tooltip-planet-title", space_location.localised_name },
+            "\n",
+            planet_data_tooltip,
+        }
     else
-        return string.format(
-            "[font=default-bold]Location:[/font] %s",
-            space_location.name:gsub("^%l", string.upper)
-        )
+        return { "itsabouttime.location-tooltip-space-location", space_location.localised_name }
     end
 end

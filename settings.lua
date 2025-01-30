@@ -1,7 +1,6 @@
 -- Define mod settings
 data:extend({
     -- Per player setting: Whether to show the clock
-    -- TODO: Localise!
     {
         setting_type = "runtime-per-user",
         name = "itsabouttime-show-clock",
@@ -11,7 +10,6 @@ data:extend({
     },
 
     -- Per player setting: Clock precision in minutes (or auto mode)
-    -- TODO: Localise!
     {
         setting_type = "runtime-per-user",
         name = "itsabouttime-clock-precision",

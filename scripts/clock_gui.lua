@@ -97,9 +97,8 @@ function set_clock_time(player, time_str, freeze_daytime)
     -- If the time is frozen (which is often the case on non-planet surfaces, like Blueprint Sandbox surfaces,
     -- Factorissimo surfaces or even on space platforms), indicate that by using gray color and an explanatory tooltip.
     if freeze_daytime then
-        time_label.caption = "[color=#7f7f7f]" .. time_str .. "[/color]"
-        -- TODO: Localise!
-        time_label.tooltip = "The flow of time is frozen on this plane of existence."
+        time_label.caption = { "", "[color=#7f7f7f]", time_str, "[/color]" }
+        time_label.tooltip = { "itsabouttime.time-tooltip-frozen-daytime" }
     else
         time_label.caption = time_str
         time_label.tooltip = nil
