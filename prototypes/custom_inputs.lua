@@ -1,5 +1,4 @@
--- Add a custom keyboard shortcut to toggle whether the GUI is visible. (Mostly helpful for debugging.)
--- TODO: How does this relate to the "show-clock" player setting?
+-- Add a custom keyboard shortcut to toggle whether the GUI is visible. Changes the "show-clock" per-player mod setting.
 -- TODO: Localise!
 data:extend({
     {

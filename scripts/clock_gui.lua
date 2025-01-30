@@ -71,11 +71,17 @@ function close_clock_gui(player)
     get_clock_gui(player).destroy()
 end
 
--- Toggle clock GUI for the given player (open or close)
-function toggle_clock_gui(player)
-    if get_clock_gui(player) then
-        close_clock_gui(player)
-    else
+-- Open or close the clock GUI for a player depending on the player settings. Recreate GUI if its already open.
+function open_or_close_clock_gui(player)
+    if not player.valid then
+        return
+    end
+
+    -- Close GUI if it is already open (to force recreating the GUI)
+    close_clock_gui(player)
+
+    -- Only open the GUI if the "show-clock" setting is enabled
+    if get_player_setting_show_clock(player) then
         open_clock_gui(player)
     end
 end
