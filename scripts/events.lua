@@ -48,10 +48,27 @@ local CLOCK_UPDATE_RATE = 4
 
 script.on_nth_tick(CLOCK_UPDATE_RATE, function()
     for _, player in pairs(game.players) do
-        -- TODO: Only update the time every nth ticks. Update location only when the surface changed.
-        -- TODO: (Either use on_player_surface_changed or similar, or save the last known surface in the mod storage
-        --       and compare it in every update call. Also check on_space_platform_changed_state.)
-        update_clock_location(player)
+        -- Only update the time, since changes in the location don't happen that often and can be handled via events.
         update_clock_time(player)
     end
 end)
+
+
+-- Events that are called in various situations that should update the location shown in the clock GUI
+function handle_change_location(event)
+    local players = game.players
+
+    -- If the event is triggered for a specific player, only update the clock location for this player.
+    if event.player_index ~= nil then
+        players = { players[event.player_index] }
+    end
+
+    for _, player in pairs(players) do
+        -- Update location AND time, because the time is location-dependent
+        update_clock(player)
+    end
+end
+
+script.on_event(defines.events.on_player_changed_surface, handle_change_location)
+script.on_event(defines.events.on_space_platform_changed_state, handle_change_location)
+script.on_event(defines.events.on_surface_created, handle_change_location)
