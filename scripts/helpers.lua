@@ -19,18 +19,26 @@ function convert_daytime_to_str(time_double, precision)
     return string.format("%02d:%02d", time_h, time_m)
 end
 
--- Calculate the optimal clock precision depending on the ticks per day on a planet so that the clock is updated
+-- Calculate the optimal clock precision depending on the ticks per day on a surface so that the clock is updated
 -- roughly once per second or less. Used when the player set the clock precision setting to "dynamic precision".
-function calculate_dynamic_clock_precision(ticks_per_day)
-    -- Calculate the in-game minutes that pass in one real life second:
-    --   real_seconds_per_day    = ticks_per_day / 60
-    --   real_seconds_per_minute = real_seconds_per_day / 24 / 60
-    --                           = ticks_per_day / 86400
-    --   minutes_per_real_second = 1 / real_seconds_per_minute
-    --                           = 1 / (ticks_per_day / 86400)
-    local minutes_per_real_second = 86400 / ticks_per_day
+-- Caches the result in the mod storage.
+function calculate_dynamic_clock_precision(surface)
+    -- Cache result in mod storage to improve performance
+    local precision_cache = storage.cache.dynamic_clock_precision_per_surface
 
-    -- To update the clock at most once per second, but still have round numbers (like XX:05 or XX:10), we round the
-    -- minutes per real second *up* to a multiple of 5. The minimum value should be 5.
-    return math.max(5, math.ceil(minutes_per_real_second / 5) * 5)
+    if precision_cache[surface.index] == nil then
+        -- Calculate the in-game minutes that pass in one real life second:
+        --   real_seconds_per_day    = ticks_per_day / 60
+        --   real_seconds_per_minute = real_seconds_per_day / 24 / 60
+        --                           = ticks_per_day / 86400
+        --   minutes_per_real_second = 1 / real_seconds_per_minute
+        --                           = 1 / (ticks_per_day / 86400)
+        local minutes_per_real_second = 86400 / surface.ticks_per_day
+
+        -- To update the clock at most once per second, but still have round numbers (like XX:05 or XX:10), we round the
+        -- minutes per real second *up* to a multiple of 5. The minimum value should be 5.
+        precision_cache[surface.index] = math.max(5, math.ceil(minutes_per_real_second / 5) * 5)
+    end
+
+    return precision_cache[surface.index]
 end

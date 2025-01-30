@@ -54,7 +54,7 @@ function update_clock_time(player)
 
         if precision == "auto" then
             -- Dynamic precision: Calculate optimal precision depending on the length of a day on the planet
-            precision = calculate_dynamic_clock_precision(effective_surface.ticks_per_day)
+            precision = calculate_dynamic_clock_precision(effective_surface)
         end
 
         local time_str = convert_daytime_to_str(effective_surface.daytime, precision)

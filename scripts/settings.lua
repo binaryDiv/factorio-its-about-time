@@ -21,10 +21,17 @@ end
 
 -- Read player setting: Clock precision (returned as an integer or the string "auto")
 function get_player_setting_clock_precision(player)
-    local precision = player.mod_settings["itsabouttime-clock-precision"].value
-    if precision == "auto" then
-        return "auto"
-    else
-        return tonumber(precision)
+    -- Cache setting in mod storage to improve performance
+    local setting_cache = storage.cache.player_settings_clock_precision
+
+    if setting_cache[player.index] == nil then
+        local precision = player.mod_settings["itsabouttime-clock-precision"].value
+        if precision == "auto" then
+            setting_cache[player.index] = "auto"
+        else
+            setting_cache[player.index] = tonumber(precision)
+        end
     end
+
+    return setting_cache[player.index]
 end

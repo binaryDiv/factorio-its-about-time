@@ -1,27 +1,32 @@
--- Mod initialization (called when starting a new game or adding the mod to an existing save)
-script.on_init(function()
+-- Mod initialization handler
+function initialize_mod()
+    -- Initialize cache in mod storage
+    storage.cache = {}
+    storage.cache.player_settings_clock_precision = {}
+    storage.cache.dynamic_clock_precision_per_surface = {}
+
     -- Open clock GUI for all players (if the "show-clock" player setting is enabled)
     for _, player in pairs(game.players) do
         open_or_close_clock_gui(player)
     end
-end)
+end
 
--- Event that is called when the game's configuration has changed, which includes: Startup mod settings were changed,
--- the game was updated, any mod was added, removed or updated.
-script.on_configuration_changed(function()
-    -- The mod might have been added to an existing game, or it was updated, or maybe something else has changed.
-    -- In any case, open/close/recreate the GUI for all players (if the "show-clock" player setting is enabled).
-    for _, player in pairs(game.players) do
-        open_or_close_clock_gui(player)
-    end
-end)
+-- Initialize mod when a new game is started or the mod is added to an existing save file
+script.on_init(initialize_mod)
+
+-- Reinitialize mod when the game's configuration has changed (i.e. startup mod settings were changed, the game was
+-- updated, any mod was added, removed or updated)
+script.on_configuration_changed(initialize_mod)
 
 -- Event that is called when a (player or map) runtime setting has been changed
 script.on_event(defines.events.on_runtime_mod_setting_changed, function(event)
-    -- Open or close the GUI if the player changed the "show-clock" setting
     if event.setting == "itsabouttime-show-clock" then
+        -- Open or close the GUI if the player changed the "show-clock" setting
         local player = game.players[event.player_index]
         open_or_close_clock_gui(player)
+    elseif event.setting == "itsabouttime-clock-precision" then
+        -- Flush settings cache
+        storage.cache.player_settings_clock_precision[event.player_index] = nil
     end
 end)
 
