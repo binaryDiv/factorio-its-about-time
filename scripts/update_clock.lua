@@ -63,7 +63,17 @@ end
 -- platform orbiting a planet, the surface of that planet is returned. Otherwise, the same surface is returned (e.g.
 -- if the surface already is a planet, or a space platform mid-flight, or some other kind of surface created by a mod.
 function get_effective_surface_for_time(surface)
-    if surface.planet ~= nil then
+    if string_ends_with(surface.name, "-factory-floor") then
+        -- Factorissimo support: Show time of the actual planet, not the factory floor (which is always frozen at 12:00)
+        local planet_name = string_remove_suffix(surface.name, "-factory-floor")
+
+        if game.surfaces[planet_name] ~= nil then
+            return game.surfaces[planet_name]
+        else
+            -- Fallback to returning the surface itself if the planet's surface doesn't exist
+            return surface
+        end
+    elseif surface.planet ~= nil then
         -- If it's the surface of a planet, return the same surface.
         return surface
     elseif surface.platform ~= nil then
@@ -89,6 +99,16 @@ end
 -- surface is a space platform that is stopped at a space location, return that space location. If there is no space
 -- location, return nil.
 function get_effective_space_location(surface)
+    -- Factorissimo support: Show the actual planet, not the factory floor "planet"
+    if string_ends_with(surface.name, "-factory-floor") then
+        local planet_name = string_remove_suffix(surface.name, "-factory-floor")
+
+        if game.planets[planet_name] ~= nil then
+            return game.planets[planet_name].prototype
+        end
+        -- If the planet doesn't exist, fallback to the default behavior and return the factory floor planet
+    end
+
     if surface.planet ~= nil then
         -- The surface belongs to a planet (i.e. space location)
         return surface.planet.prototype

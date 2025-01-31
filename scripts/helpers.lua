@@ -42,3 +42,18 @@ function calculate_dynamic_clock_precision(surface)
 
     return precision_cache[surface.index]
 end
+
+-- Return true if the first string starts with the second string
+function string_starts_with(str, prefix)
+    return str:sub(1, #prefix) == prefix
+end
+
+-- Return true if the first string ends with the second string
+function string_ends_with(str, suffix)
+    return str:sub(-#suffix) == suffix
+end
+
+-- Remove a suffix from a string (assumes that the string actually has this suffix!)
+function string_remove_suffix(str, suffix)
+    return str:sub(1, -#suffix - 1)
+end
