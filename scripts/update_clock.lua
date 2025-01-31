@@ -25,8 +25,28 @@ function update_clock_location(player)
         set_clock_misc_sprite(player, "utility/space_age_icon", { "itsabouttime.location-tooltip-in-space" })
     else
         -- Player is on a surface that's neither a planet nor a space platform (e.g. a Blueprint Sandbox surface)
+        local misc_sprite_path = "utility/questionmark"
+        local misc_sprite_tooltip = { "itsabouttime.location-tooltip-unknown-surface" }
+
+        -- Check for surfaces provided by supported mods and show their icon and a fitting tooltip
+        -- (We could additionally check if the mod is actually installed to avoid coincidental matches, but those are
+        -- unlikely, and we check the validity of the sprite path anyway to avoid crashes, so we won't do that.)
+        if string_starts_with(surface.name, "bpsb-lab-") then
+            -- Lab surface from the mod "Blueprint Sandboxes"
+            misc_sprite_path = "item-group/blueprint-sandboxes"
+            misc_sprite_tooltip = { "itsabouttime.location-tooltip-blueprint-sandbox" }
+        elseif string_starts_with(surface.name, "drawing-board_") then
+            -- Lab surface from the mod "Drawing Board"
+            misc_sprite_path = "shortcut/drawing-board-setup"
+            misc_sprite_tooltip = { "itsabouttime.location-tooltip-drawing-board" }
+        elseif string_starts_with(surface.name, "proc_") then
+            -- Circuit surface from the mod "Compact circuits"
+            misc_sprite_path = "entity/compaktcircuit-processor"
+            misc_sprite_tooltip = { "itsabouttime.location-tooltip-compact-circuits" }
+        end
+
         set_clock_planet(player, nil)
-        set_clock_misc_sprite(player, "utility/questionmark", { "itsabouttime.location-tooltip-unknown-surface" })
+        set_clock_misc_sprite(player, misc_sprite_path, misc_sprite_tooltip)
     end
 end
 
