@@ -1,0 +1,12 @@
+---------------------------------------------------------------------------------------------------
+Version: 1.0.0
+Date: 31. 01. 2025
+  Major Features:
+    - Initial release.
+    - Implemented clock UI with time and location.
+  Features:
+    - Added player settings for clock visibility and clock precision.
+    - Added mod support for Factorissimo 3, Blueprint Sandboxes, Drawing board and Compact circuits.
+  Translation:
+    - Added English translation.
+    - Added German translation.
