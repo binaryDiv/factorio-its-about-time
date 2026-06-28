@@ -5,17 +5,17 @@ end
 
 -- Return the label GUI element that shows the time (assumes the GUI is open!)
 function get_clock_gui_time_label(player)
-    return get_clock_gui(player).time_label
+    return get_clock_gui(player).itsabouttime_time_label
 end
 
 -- Return the choose-elem-button GUI element that shows the current planet (assumes the GUI is open!)
 function get_clock_gui_planet_button(player)
-    return get_clock_gui(player).planet_button
+    return get_clock_gui(player).itsabouttime_planet_button
 end
 
 -- Return the sprite button GUI element that is used when the current surface is not a planet (assumes the GUI is open!)
 function get_clock_gui_misc_sprite_button(player)
-    return get_clock_gui(player).misc_sprite_button
+    return get_clock_gui(player).itsabouttime_misc_sprite_button
 end
 
 -- Create the clock GUI for the given player if it doesn't exist yet
@@ -35,7 +35,7 @@ function open_clock_gui(player)
     -- Create sprite button that can be used to display icons if the current location is not a valid space location.
     local misc_sprite_button = clock_frame.add {
         type = "sprite-button",
-        name = "misc_sprite_button",
+        name = "itsabouttime_misc_sprite_button",
         style = "slot_button",
         sprite = nil,
         visible = false,
@@ -45,7 +45,7 @@ function open_clock_gui(player)
     -- button, which allows the player to alt-click it to open the Factoriopedia page on the planet.
     local planet_button = clock_frame.add {
         type = "choose-elem-button",
-        name = "planet_button",
+        name = "itsabouttime_planet_button",
         elem_type = "space-location",
     }
     planet_button.locked = true
@@ -53,7 +53,7 @@ function open_clock_gui(player)
     -- Create label that displays the time
     local time_label = clock_frame.add {
         type = "label",
-        name = "time_label",
+        name = "itsabouttime_time_label",
         style = "itsabouttime-time-label",
         caption = "00:00",
     }
@@ -148,3 +148,16 @@ function set_clock_misc_sprite(player, sprite_path, tooltip)
         sprite_button.tooltip = tooltip
     end
 end
+
+-- Event handler for clicking buttons in the GUI
+script.on_event(defines.events.on_gui_click, function (event)
+    if event.element.name == "itsabouttime_planet_button" then
+        local player = game.get_player(event.player_index)
+        local planet_name = event.element.elem_value
+        local space_location = prototypes.space_location[planet_name]
+
+        if player and space_location then
+            player.open_factoriopedia_gui(space_location)
+        end
+    end
+end)
