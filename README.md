@@ -26,8 +26,7 @@ The mod is inspired by [What Time Is It](https://mods.factorio.com/mod/WhatTimeI
 - Shows the current planet with additional information about each phase of the day: Sunrise, day, sunset, night.
     - This is based on the `LuaSurface` properties `morning`, `dawn`, `dusk` and `evening`.
     - These times are actually the same on all Space Age planets, but they are writable properties, so technically (and realistically) they could be different. I think mods could even implement seasons using this... (Anyone wanna try? 😅)
-- You can alt-click the planet button to open the planet's Factoriopedia page.
-    - Regular clicks don't do anything yet - open for suggestions!
+- You can click the planet button to open the planet's Factoriopedia page.
 - When you are on a space platform that is orbiting a planet, the icon and time of the planet are displayed.
 - Properly handles surfaces created by mods that are not planets or space platforms (like Blueprint Sandboxes).
 - Indicates when the time on a surface is frozen by displaying the time in gray.
@@ -36,7 +35,7 @@ The mod is inspired by [What Time Is It](https://mods.factorio.com/mod/WhatTimeI
 
 - Install the mod. The clock will open automatically. :)
 - Hover the planet button to get information about the day times on the current planet.
-- Alt-click the planet button to open the planet's Factoriopedia page.
+- Click the planet button to open the planet's Factoriopedia page.
 
 ## Mod compatibility
 
@@ -55,9 +54,6 @@ If you encounter any mod incompatibilities, or want me to add custom support for
 
 ## Known issues / future ideas
 
-- The planet/location button doesn't have any functionality besides alt-clicking for opening the planet's Factoriopedia page.
-    - I couldn't figure out how to open the Factoriopedia page via code by just clicking the button. Alt-clicking works without any code, because the planet button is technically a `choose-elem-button` for space locations, which is locked to make it read-only.
-    - If you have any suggestions what clicking the button could do, please tell me. ^^
 - I thought about (optionally) showing the current day on the planet, but haven't implemented it so far.
     - I'm not sure what would be the best way to do this. On Nauvis (or whatever planet the player starts on) I could just use the "ticks since start of the game" to calculate the current day, but what should be shown on other planets?
     - Again, feel free to reach out with suggestions if you would like to have this feature.
